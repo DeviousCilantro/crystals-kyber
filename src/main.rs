@@ -43,10 +43,10 @@ fn generate_keypair() -> ((Polynomial, Polynomial), (((Polynomial, Polynomial), 
         s.1[i]   = generate_range(&rng, -3, 3);
         e.0[i]   = generate_range(&rng, -3, 3);
         e.1[i]   = generate_range(&rng, -3, 3);
-        a.0.0[i] = generate_range(&rng, 0, 3328);
-        a.0.1[i] = generate_range(&rng, 0, 3328);
-        a.1.0[i] = generate_range(&rng, 0, 3328);
-        a.1.1[i] = generate_range(&rng, 0, 3328);
+        a.0.0[i] = generate_range(&rng, -1664, 1664);
+        a.0.1[i] = generate_range(&rng, -1664, 1664);
+        a.1.0[i] = generate_range(&rng, -1664, 1664);
+        a.1.1[i] = generate_range(&rng, -1664, 1664);
     }
 
     let mut sum_1 = poly_modulo(a.0.0.clone() * s.0.clone(), modulus.clone()) + poly_modulo(a.0.1.clone() * s.1.clone(), modulus.clone());
@@ -101,7 +101,7 @@ fn encrypt_plaintext(pk: (((Polynomial, Polynomial), (Polynomial, Polynomial)), 
 
     let mut plaintext = Polynomial::new(plaintext_coefficients.as_slice());
     
-    plaintext *= Polynomial::constant(1665.0);
+    plaintext *= Polynomial::constant(1664.0);
 
     let mut sum_1 = poly_modulo(a.0.0.clone() * r.0.clone(), modulus.clone()) + poly_modulo(a.1.0.clone() * r.1.clone(), modulus.clone());
     let mut sum_2 = poly_modulo(a.0.1.clone() * r.0.clone(), modulus.clone()) + poly_modulo(a.1.1 * r.1.clone(), modulus.clone());
@@ -147,7 +147,7 @@ fn decrypt_ciphertext(ciphertext: ((Polynomial, Polynomial), Polynomial), s: (Po
     mn = coeff_modulo(&mut mn, 3329.0);
 
     for i in 0..256 {
-        if (mn[i] - 1665.0).abs() < mn[i].abs() && (mn[i] - 1665.0).abs() < (mn[i] - 3329.0).abs() {
+        if (mn[i] - 1664.0).abs() < mn[i].abs() && (mn[i] - 1664.0).abs() < (mn[i] - 3329.0).abs() {
             plaintext_coefficients.push(1.0);
         } else {
             plaintext_coefficients.push(0.0);
